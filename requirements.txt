@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+PySocks
+spacy
+ipwhois
+playwright
+warcio
+stem
+neo4j
