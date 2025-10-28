@@ -4,7 +4,6 @@ TorIntel Scan - a research-oriented TOR reconnaissance and evidence-capture tool
 Single-file Python scanner and crawler for .onion sites.
 Features: page scraping, fingerprinting, header leak detection, SSRF/LFI checks (opt-in), port scanning over Tor, Bitcoin reconnaissance, clearnet enrichment (ASN/WHOIS), mirror/clone detection, evidentiary capture (Playwright + WARC), and crawler/discovery mode.
 
-Intended use: lawful research, threat intelligence, red-team readiness, and lawful investigations. Not for abuse, hacking, or unauthorised access.
 
 ############
 Requirements
@@ -18,8 +17,6 @@ python -m venv .venv
 source .venv/bin/activate      # on Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-
-Respect applicable laws and your organisation’s policies. Evidence capture should follow chain-of-custody requirements if you intend to use it in formal investigations.
 
 ######
 Usage
@@ -114,6 +111,8 @@ Active testing (SSRF/LFI payloads) can cause harm — use only in controlled/law
 Be aware of local laws around accessing, collecting, and storing certain types of content
 
 This tool can produce sensitive intelligence; treat it accordingly.
+
+Respect applicable laws and your organisation’s policies. Evidence capture should follow chain-of-custody requirements if you intend to use it in formal investigations.
 
 ####
 FAQ
