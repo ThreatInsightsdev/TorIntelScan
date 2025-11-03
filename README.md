@@ -1,122 +1,31 @@
 # TorIntelScan
-TorIntel Scan - a research-oriented TOR reconnaissance and evidence-capture tool.
 
-Single-file Python scanner and crawler for .onion sites.
-Features: page scraping, fingerprinting, header leak detection, SSRF/LFI checks (opt-in), port scanning over Tor, Bitcoin reconnaissance, clearnet enrichment (ASN/WHOIS), mirror/clone detection, evidentiary capture (Playwright + WARC), and crawler/discovery mode.
-
-
-############
-Requirements
-############
-
-Python 3.10+ recommended.
-
-Install dependencies (example):
-
-python -m venv .venv
-source .venv/bin/activate      # on Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+playwright install
 
 
-######
-Usage
-#####
-
-Basic single-scan (default output torintel_output.jsonl):
-
-python3 torintel_scan_full.py --url http://exampleonionaddress.onion
-
-Scan + evidence capture (screenshots + DOM; auto case dir):
-
-python3 torintel_scan_full.py \
-  --url http://exampleonionaddress.onion \
-  --evidence \
-  --warc
 
 
-Enable active SSRF/LFI tests (use with caution, may trigger instability):
-
-python3 torintel_scan_full.py --url http://exampleonionaddress.onion --active-tests
+python3 torscanner1.py --url threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion --enrich-clearnet  --mirror-detect --index-file corpus_index.json  --output torintel_output.jsonl  --evidence --case-dir case_example --warc  --queue-wait 300 --queue-log queue_log.jsonl  --wait-selector "main,#content" --max-wait 300 --timeline --snapshot-every 10
 
 
-Enable live Bitcoin recon for scraped BTC addresses (public APIs):
 
-python3 torintel_scan_full.py --url http://exampleonionaddress.onion --btc-recon --btc-provider blockstream
+Notes:
 
+--wait-selector "main,#content" accepts CSS selectors (comma-separated); the script will wait for any selector to appear (via Playwright) or for wait-keywords to match page content.
 
-Crawl mode (seed file with onion URLs, one per line):
+--max-wait is in seconds (so --max-wait 300 = 300 seconds = 5 minutes).
 
-python3 torintel_scan_full.py --crawl --seed-file seeds.txt --max-depth 2 --delay 1.0 --discovered-out discovered_onions.txt
+--queue-wait is included for compatibility but --max-wait is what governs maximum waiting time.
 
+Playwright is optional. If not installed, screenshot/DOM capture will be skipped gracefully.
 
-Mirror detection (simhash + favicon) — enable with --mirror-detect and optionally set --index-file to your corpus index path.
-
-Breach/enrichment options:
-
-python3 torintel_scan_full.py --url http://exampleonionaddress.onion --breach-check --hibp-key YOUR_HIBP_KEY --enrich-clearnet --pdns-provider securitytrails --pdns-key YOUR_KEY
-
-CLI Flags (summary)
-
---url : single .onion URL to scan (required unless using --crawl)
-
---output : JSONL output file (default torintel_output.jsonl)
-
---btc-recon : enable BTC live recon via public APIs
-
---btc-provider : blockstream or sochain (default blockstream)
-
---btc-cache : path to store BTC cache
-
---active-tests : enable SSRF/LFI checks (active testing — use with caution)
-
---crawl : enable crawler/discovery mode
-
---seed-file : path to newline-separated onion seeds
-
---max-depth : crawler max depth (default 1)
-
---delay : seconds between requests (default 1.0)
-
---discovered-out : file to append newly discovered onion links
-
---evidence : enable Playwright screenshot/DOM capture
-
---case-dir : directory for evidence bundle (auto-generated if omitted)
-
---warc : save WARC (requires warcio)
-
---enrich-clearnet : run ASN/WHOIS enrichment for clearnet pivots
-
---pdns-provider : securitytrails (requires API key)
-
---pdns-key : PDNS API key
-
---breach-check : lookup scraped emails in HIBP (requires --hibp-key)
-
---hibp-key : HaveIBeenPwned API key
-
---mirror-detect : detect clones using simhash + favicon
-
---index-file : path to corpus index (for mirror detection)
+Make sure Tor is running locally and reachable at 127.0.0.1:9050. For NEWNYM support you need Tor control auth (and stem).
 
 
-######################
-Ethics, legal & safety
-######################
+# FAQ
 
-Only target systems for which you have explicit permission, or which are permitted for lawful research by your organisation/mandate.
-
-Active testing (SSRF/LFI payloads) can cause harm — use only in controlled/lawful contexts.
-
-Be aware of local laws around accessing, collecting, and storing certain types of content
-
-This tool can produce sensitive intelligence; treat it accordingly.
-
-Respect applicable laws and your organisation’s policies. Evidence capture should follow chain-of-custody requirements if you intend to use it in formal investigations.
-
-####
-FAQ
-####
 
 Q: Is this tool law-enforcement ready?
 A: Short answer is NO - It contains many investigative features (evidence capture, checksums etc ). Law-enforcement agencies often require validated capture tooling and documented procedures. It would need additional hardening, secure storage, and legal review to be used in formal prosecutions.
@@ -126,3 +35,6 @@ A: Not magically NO. .onion addresses are self-authenticating identifiers that d
 
 Q: How to find new onion sites without search engines?
 A: Scraping public indexes, monitoring forums & paste sites for links, crawling from seed lists, and harvesting leaked indexes. The script’s --crawl plus updated seed lists helps automate discovery.
+
+
+A few things left to do. Probably a URL diretory scanner needs implementing, some node/graph analysis and a database would be a good idea. 
