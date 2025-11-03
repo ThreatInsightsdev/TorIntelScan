@@ -6,6 +6,7 @@
 #
 # NOTE: Requires Tor running locally (SOCKS5 127.0.0.1:9050). Optional extras:
 # playwright, warcio, ipwhois, stem, neo4j, etc.
+# Built by THREATINSIGHTS.net
 
 import requests
 from bs4 import BeautifulSoup
