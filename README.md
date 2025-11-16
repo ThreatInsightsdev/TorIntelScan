@@ -7,7 +7,7 @@ playwright install
 
 
 
-python3 torscanner1.py --url threeamkelxicjsaf2czjyz2lc4q3ngqkxhhlexyfcp2o6raw4rphyad.onion --enrich-clearnet  --mirror-detect --index-file corpus_index.json  --output torintel_output.jsonl  --evidence --case-dir case_example --warc  --queue-wait 300 --queue-log queue_log.jsonl  --wait-selector "main,#content" --max-wait 300 --timeline --snapshot-every 10
+python3 torscanner1.py --url address.onion --enrich-clearnet  --mirror-detect --index-file corpus_index.json  --output torintel_output.jsonl  --evidence --case-dir case_example --warc  --queue-wait 300 --queue-log queue_log.jsonl  --wait-selector "main,#content" --max-wait 300 --timeline --snapshot-every 10
 
 
 
